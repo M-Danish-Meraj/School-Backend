@@ -1,5 +1,6 @@
+
+import dj_database_url
 from pathlib import Path
-import dj_database_url 
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -61,15 +62,20 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # Using PostgreSQL  'usermanagement1' 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'usermanagement1',    
+#         'USER': 'postgres',
+#         'PASSWORD': '123456',  
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'usermanagement1',    
-        'USER': 'postgres',
-        'PASSWORD': '123456',  
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+    )
 }
 
 # Password validation
