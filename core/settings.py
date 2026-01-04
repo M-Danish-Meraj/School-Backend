@@ -71,12 +71,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-
 DATABASES = {
     'default': dj_database_url.config(
-        # Ye line check karegi ke agar DATABASE_URL nahi mila to error de
-        default=os.environ.get('DATABASE_URL'), 
-        conn_max_age=600
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
