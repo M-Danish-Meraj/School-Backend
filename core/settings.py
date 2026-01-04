@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # <--- 1️⃣ MUST BE FIRST
+    'corsheaders.middleware.CorsMiddleware',  
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # <--- 2️⃣ MUST BE ABOVE COMMON
@@ -96,7 +96,7 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = 'static/'
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 CORS_ALLOW_ALL_ORIGINS = False
