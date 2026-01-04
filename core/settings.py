@@ -71,22 +71,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
+MY_DB_LINK = "postgresql://neondb_owner:npg_uJ2RyMzCLo4B@ep-lively-sun-ah9ffw9h-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': dj_database_url.parse(MY_DB_LINK)
 }
-
-# Agar upar wala fail ho jaye (sirf laptop ke liye fallback):
-if not DATABASES['default']:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
