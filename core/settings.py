@@ -11,7 +11,8 @@ SECRET_KEY = 'django-insecure-f-g(+qh+a5fn0b#gmd2)szqs)%4%++jln0!54t+vi8px061o2)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True 
 
-ALLOWED_HOSTS = []
+# Sabko allow kar rahe hain taake Vercel pe koi rok tok na ho
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,14 +35,15 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # <--- 2️⃣ MUST BE ABOVE COMMON
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware', # Keep commented for now
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 ROOT_URLCONF = 'core.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -59,19 +61,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-# Using PostgreSQL  'usermanagement1' 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'usermanagement1',    
-#         'USER': 'postgres',
-#         'PASSWORD': '123456',  
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+# ==========================================
+# 🔥 DATABASE SETUP (FIXED)
+# Humne SQLite ko hata diya hai aur Hardcoded Neon Link laga diya hai.
+# ==========================================
+
 MY_DB_LINK = "postgresql://neondb_owner:npg_uJ2RyMzCLo4B@ep-lively-sun-ah9ffw9h-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
+
 DATABASES = {
     'default': dj_database_url.parse(MY_DB_LINK)
 }
@@ -98,23 +94,34 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-STATIC_URL = 'static/'
-ALLOWED_HOSTS = ['*']
+# ==========================================
+# 📂 STATIC FILES (Vercel Requirement)
+# ==========================================
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
+
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
-CORS_ALLOW_ALL_ORIGINS = False
+
+# ==========================================
+# 🌐 CORS & SECURITY SETTINGS
+# ==========================================
+CORS_ALLOW_ALL_ORIGINS = False # Set to True agar frontend connect na ho
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://school-backend-woad-three.vercel.app", # Aapka Vercel Domain add kiya hai
 ]
+
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "https://school-backend-woad-three.vercel.app", # Aapka Vercel Domain add kiya hai
 ]
-# Allow standard methods
+
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -123,19 +130,11 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-SESSION_COOKIE_SECURE = False  # Important for localhost!
+
+SESSION_COOKIE_SECURE = False  
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_HTTPONLY = True
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600
-    )
-}
-
-# Static Files Setup for Vercel
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
