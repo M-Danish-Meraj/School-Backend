@@ -71,13 +71,23 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
+
 DATABASES = {
     'default': dj_database_url.config(
-        # Agar Vercel pe hai to Neon use karega, Laptop pe hai to SQLite
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        # Ye line check karegi ke agar DATABASE_URL nahi mila to error de
+        default=os.environ.get('DATABASE_URL'), 
         conn_max_age=600
     )
 }
+
+# Agar upar wala fail ho jaye (sirf laptop ke liye fallback):
+if not DATABASES['default']:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
